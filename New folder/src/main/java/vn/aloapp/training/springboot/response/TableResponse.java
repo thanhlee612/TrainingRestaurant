@@ -38,7 +38,8 @@ public class TableResponse {
 		
 	@JsonProperty("create_at")
 	private Date createAt;
-	
+
+
 	public TableResponse() {}
 
 	public TableResponse(TableEntity e) {
@@ -53,7 +54,6 @@ public class TableResponse {
 		this.status = e.isStatus() ? 1 : 0 ;
 		this.createAt = e.getCreatedAt();
 	}
-	
 	public List<TableResponse> mapToList(List<TableEntity> entity){
 		return entity.stream().map(x -> new TableResponse(x)).collect(Collectors.toList());
 	}
@@ -129,5 +129,5 @@ public class TableResponse {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-	
+
 }

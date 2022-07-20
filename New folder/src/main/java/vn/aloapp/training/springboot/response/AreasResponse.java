@@ -31,18 +31,28 @@ public class AreasResponse {
 	@JsonProperty("status")
 	private int status;
 
-	@JsonProperty("tables")
-	private List<TableResponse> listTable;
+	@JsonProperty("total")
+	private int total;
 
-	public List<TableResponse> getListTable() {
-		return listTable;
+	public int getTotal() {
+		return total;
 	}
 
-	public void setListTable(List<TableResponse> listTable) {
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
+	@JsonProperty("tables")
+	private TableResponse2 listTable;
+
+	public TableResponse2 getListTable() {
+		return listTable;
+	}
+	public void setListTable(TableResponse2 listTable) {
 		this.listTable = listTable;
 	}
 
-	public AreasResponse(AreasEntity e, List<TableResponse> listTable) {
+	public AreasResponse(AreasEntity e, TableResponse2 listTable) {
 		this.listTable = listTable;
 		this.id = e.getId();
 		this.restaurantId = e.getRestaurantId();
@@ -55,10 +65,12 @@ public class AreasResponse {
 
 	public List<AreasResponse> mapToListv2(List<AreasEntity> entity, List<TableEntity> tables) {
 		return entity.stream().map(x -> {
+			/*Loc danh sach ban theo id khu vuc */
 			List<TableEntity> list = tables.stream().filter(y -> y.getAreaId() == x.getId())
 					.collect(Collectors.toList());
-			List<TableResponse> listTable = new TableResponse().mapToList(list);
-			return new AreasResponse(x, listTable);
+			/*tra ve response cua danh sach ban */
+			List<TableResponse> listTableReponse = new TableResponse().mapToList(tables);
+			return new AreasResponse(x, new TableResponse2(listTableReponse));
 		}).collect(Collectors.toList());
 	}
 

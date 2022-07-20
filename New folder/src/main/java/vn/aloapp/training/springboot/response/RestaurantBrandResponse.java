@@ -32,20 +32,19 @@ public class RestaurantBrandResponse {
 	
 	@JsonProperty("created_at")
 	private Date createdAt;
-	
 	@JsonProperty("branchs")
-	private List<BranchResponse> listBranch;
-	
-	public List<BranchResponse> getListBranch() {
-		return listBranch;
+	private BranchResponse2 branch2;
+
+	public BranchResponse2 getBranch() {
+		return branch2;
 	}
 
-	public void setListBranch(List<BranchResponse> listBranch) {
-		this.listBranch = listBranch;
+	public void setBranch(BranchResponse2 branch2) {
+		this.branch2 = branch2;
 	}
 
-	public RestaurantBrandResponse(RestaurantBrand e, List<BranchResponse> listBranch) {
-		this.listBranch = listBranch;
+	public RestaurantBrandResponse(RestaurantBrand e, BranchResponse2 branch2) {
+		this.branch2 = branch2;
 		this.id = e.getId();
 		this.restaurantId = e.getRestaurantId();
 		this.name = e.getName();
@@ -56,10 +55,10 @@ public class RestaurantBrandResponse {
 		this.createdAt = e.getCreatedAt();
 	}
 	
-	public List<RestaurantBrandResponse> mapToListv2(List<RestaurantBrand> entity, List<BranchResponse> b) {
+	public List<RestaurantBrandResponse> mapToListv2( List<RestaurantBrand> entity, List<BranchResponse> branch) {
 		return entity.stream().map(x -> {
-			List<BranchResponse> listBranch = b.stream().filter(y -> y.getRestaurantBrandId() == x.getId()).collect(Collectors.toList());
-			return new RestaurantBrandResponse(x, listBranch);
+			List<BranchResponse> listBranch = branch.stream().filter(y -> x.getId() == y.getRestaurantBrandId()).collect(Collectors.toList());
+			return new RestaurantBrandResponse(x, new BranchResponse2(listBranch));
 		}).collect(Collectors.toList());
 	}
 	
@@ -70,7 +69,6 @@ public class RestaurantBrandResponse {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
 	public RestaurantBrandResponse() {}
 
 	public RestaurantBrandResponse(RestaurantBrand e) {

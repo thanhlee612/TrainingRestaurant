@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import vn.aloapp.training.springboot.entity.AreasEntity;
 import vn.aloapp.training.springboot.entity.Branch;
 
 public class BranchResponse {
@@ -36,18 +37,18 @@ public class BranchResponse {
 	private Date createdAt;
 
 	@JsonProperty("areas")
-	private List<AreasResponse> listArea;
+	private AreasResponse2 Area;
 
-	public List<AreasResponse> getListArea() {
-		return listArea;
+	public AreasResponse2 getArea() {
+		return Area;
 	}
 
-	public void setListArea(List<AreasResponse> listArea) {
-		this.listArea = listArea;
+	public void setArea(AreasResponse2 area) {
+		Area = area;
 	}
 
-	public BranchResponse(Branch entity, List<AreasResponse> listArea) {
-		this.listArea = listArea;
+	public BranchResponse(Branch entity, AreasResponse2 Area) {
+		this.Area = Area;
 		this.id = entity.getId();
 		this.restaurantId = entity.getRestaurantId();
 		this.restaurantBrandId = entity.getRestaurantBrandId();
@@ -60,10 +61,10 @@ public class BranchResponse {
 		
 	}
 
-	public List<BranchResponse> mapToListv2(List<Branch> entity, List<AreasResponse> a) {
+	public List<BranchResponse> mapToListv2(List<Branch> entity, List<AreasResponse> area) {
 		return entity.stream().map(x -> {
-			List<AreasResponse> listArea = a.stream().filter(y -> y.getBranchId() == x.getId()).collect(Collectors.toList());
-			return new BranchResponse(x, listArea);
+			List<AreasResponse> listArea = area.stream().filter(y -> y.getBranchId() == x.getId()).collect(Collectors.toList());
+			return new BranchResponse(x, new AreasResponse2(listArea));
 		}).collect(Collectors.toList());
 	}
 

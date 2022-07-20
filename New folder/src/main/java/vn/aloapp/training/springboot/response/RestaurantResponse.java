@@ -1,12 +1,16 @@
 package vn.aloapp.training.springboot.response;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.aspectj.weaver.ArrayReferenceType;
 import vn.aloapp.training.springboot.entity.Restaurant;
+
+import javax.persistence.Tuple;
 
 public class RestaurantResponse {
 
@@ -35,19 +39,29 @@ public class RestaurantResponse {
 	@JsonProperty("status")
 	private int status;
 
+	@JsonProperty("total")
+	private int total;
+
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
 	@JsonProperty("restaurant_brands")
-	private List<RestaurantBrandResponse> listRestaurantBrand;
+	public RestaurantBrandResponse2 listRestaurantBrand2;
 
-	public List<RestaurantBrandResponse> getListRestaurantBrand() {
-		return listRestaurantBrand;
+	public RestaurantBrandResponse2 getListRestaurantBrand2() {
+		return listRestaurantBrand2;
 	}
 
-	public void setListRestaurantBrand(List<RestaurantBrandResponse> listRestaurantBrand) {
-		this.listRestaurantBrand = listRestaurantBrand;
+	public void setListRestaurantBrand2(RestaurantBrandResponse2 listRestaurantBrand2) {
+		this.listRestaurantBrand2 = listRestaurantBrand2;
 	}
 
-	public RestaurantResponse(Restaurant entity, List<RestaurantBrandResponse> listRestaurantBrand) {
-		this.listRestaurantBrand = listRestaurantBrand;
+	public RestaurantResponse(Restaurant entity, RestaurantBrandResponse2 listRestaurantBrand2) {
+		this.listRestaurantBrand2 = listRestaurantBrand2;
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.email = entity.getEmail();
@@ -63,15 +77,15 @@ public class RestaurantResponse {
 		return entiies.stream().map(x -> {
 			List<RestaurantBrandResponse> list = rb.stream().filter(y -> y.getRestaurantId() == x.getId())
 					.collect(Collectors.toList());
-			return new RestaurantResponse(x, list);
+			return new RestaurantResponse(x, new RestaurantBrandResponse2(list));
 		}).collect(Collectors.toList());
 	}
 
-	public RestaurantResponse mapToListv3(Restaurant r, List<RestaurantBrandResponse> rb) {
-		List<RestaurantBrandResponse> list = rb.stream().filter(y -> y.getRestaurantId() == r.getId())
-				.collect(Collectors.toList());
-		return new RestaurantResponse(r, list);
-	}
+//	public RestaurantResponse mapToListv3(Restaurant r, List<RestaurantBrandResponse> rb) {
+//		List<RestaurantBrandResponse> list = rb.stream().filter(y -> y.getRestaurantId() == r.getId())
+//				.collect(Collectors.toList());
+//		return new RestaurantResponse(r, list);
+//	}
 
 	public int getStatus() {
 		return status;
@@ -94,7 +108,6 @@ public class RestaurantResponse {
 		this.logo = entity.getLogo();
 		this.createdAt = entity.getCreatedAt();
 		this.status = entity.isStatus() ? 1 : 0;
-
 	}
 
 	public List<RestaurantResponse> mapToList(List<Restaurant> entiies) {

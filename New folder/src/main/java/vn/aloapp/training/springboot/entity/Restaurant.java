@@ -37,6 +37,7 @@ public class Restaurant extends BaseEntity {
 	@Column(name = "logo")
 	private String logo;
 
+
 	
 	
 	public int getId() {
